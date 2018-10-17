@@ -2,7 +2,12 @@ import React, {Component} from 'react';
 import VideoListItem from './video_list_item'
 const VideoList = (props) => {
 	const videoItems = props.videos.map((video) => {
-		return <VideoListItem key = {video.etag} video = {video} />
+		return (
+			<VideoListItem 					//passes details to video_list_item
+				onVideoSelect = {props.onVideoSelect} 
+				key = {video.etag}
+				video = {video} />
+		);
 	});
 
 	return(

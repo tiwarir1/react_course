@@ -2,7 +2,8 @@ import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
 import YTSearch from 'youtube-api-search';
 import SearchBar from './components/searchbar';
-import VideoList from './components/video_list'
+import VideoList from './components/video_list';
+import VideoDetail from './components/video_detail';
 
 //go to console.developers.google.com and signup for a API credentials for youtube data API v3
 //that is the API key included in this video
@@ -16,12 +17,19 @@ class App extends Component {
 	constructor (props) {
 		super(props);
 
-		this.state = { videos: [] };
+		this.state = { 
+			videos: [],
+			selectedVideo: null
+		};
 
 		YTSearch({key: API_KEY, term: 'sacred games'}, (videos) => {
-			this.setState({videos});
-			//this can be written as (data) => {this.setState({videos: data})}
-			//we wrote it like this because key({videos}) and the properties(video) are the same. It is an ES6 syntax
+			//This can also be written like this. since key:value is the same
+			//it is a ES6 syntax
+			//this.setState({videos});
+			this.setState({
+				videos: videos,
+				selectedVideo: videos[0]
+			});
 		});
 	}
 
@@ -29,7 +37,12 @@ class App extends Component {
 		return (
 			<div>
 				<SearchBar />
-				<VideoList videos = {this.state.videos} />
+				<VideoDetail video = {this.state.selectedVideo} />
+				<VideoList 
+					onVideoSelect = {
+						selectedVideo => this.setState({selectedVideo})
+					}
+					videos = {this.state.videos} />
 			</div>
 		);
 	}
