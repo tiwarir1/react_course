@@ -1,3 +1,4 @@
+import _ from 'lodash';		//npm install --save lodash
 import React, { Component} from 'react';
 import ReactDOM from 'react-dom';
 import YTSearch from 'youtube-api-search';
@@ -22,7 +23,11 @@ class App extends Component {
 			selectedVideo: null
 		};
 
-		YTSearch({key: API_KEY, term: 'sacred games'}, (videos) => {
+		this.videoSearch('latest news');
+	}
+
+	videoSearch (term) {
+		YTSearch({key: API_KEY, term: term}, (videos) => {
 			//This can also be written like this. since key:value is the same
 			//it is a ES6 syntax
 			//this.setState({videos});
@@ -31,18 +36,21 @@ class App extends Component {
 				selectedVideo: videos[0]
 			});
 		});
+
 	}
 
 	render() {
+		const videoSearch = _.debounce((term) => {this.videoSearch(term)}, 300);
+
 		return (
 			<div>
-				<SearchBar />
+				<SearchBar onSearchTermChange = {videoSearch} />
 				<VideoDetail video = {this.state.selectedVideo} />
 				<VideoList 
 					onVideoSelect = {
 						selectedVideo => this.setState({selectedVideo})
 					}
-					videos = {this.state.videos} />
+				videos = {this.state.videos} />
 			</div>
 		);
 	}

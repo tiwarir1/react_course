@@ -11,12 +11,12 @@ class SearchBar extends Component {		//if you do not import {Component} in the t
 
 	render () {
 		return (
-			<div>
+			<div className = "search-bar">
 				<input
 					value = {this.state.term} 
-					onChange = {(event) => this.setState({term: event.target.value})} />
+					onChange = {(event) => this.onInputChange(event.target.value)} />
 			</div>
-			)
+		);
 	}
 
 	//It can be written as this too
@@ -27,6 +27,12 @@ class SearchBar extends Component {		//if you do not import {Component} in the t
 	onInputChange (event) {
 		console.log(event.target.value);
 	}*/
+
+
+	onInputChange(term) {
+		this.setState({term});
+		this.props.onSearchTermChange(term);
+	}
 }
 
 export default SearchBar;
